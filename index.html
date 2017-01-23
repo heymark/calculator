@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>Calculator</title>
+  <link rel='stylesheet' href='build/style/calculator.css'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+  <div id='calculator'>
+    <div id='display'></div>
+    <form id='keypad'>
+      <fieldset id='numbers-group'>
+        <legend>Numbers &amp; Decimal</legend>
+        <button type='button' id='zero' >0</button>
+        <button type='button' id='point'>.</button>
+        <button type='button' id='one'  >1</button>
+        <button type='button' id='two'  >2</button>
+        <button type='button' id='three'>3</button>
+        <button type='button' id='four' >4</button>
+        <button type='button' id='five' >5</button>
+        <button type='button' id='six'  >6</button>
+        <button type='button' id='seven'>7</button>
+        <button type='button' id='eight'>8</button>
+        <button type='button' id='nine' >9</button>
+      </fieldset>
+      <fieldset id='operators-group'>
+        <legend>Arithmetic Operations</legend>
+        <button type='button' id='plus' >+</button>
+        <button type='button' id='minus'>-</button>
+        <button type='button' id='times'>×</button>
+        <button type='button' id='div'  >/</button>
+      </fieldset>
+      <fieldset id='extras-group'>
+        <legend>Swap Sign, Clear Entry, All Clear &amp; Equals</legend>
+        <button type='button' id='negative'  >±</button>
+        <button type='button' id='clearEntry'>CE</button>
+        <button type='button' id='allClear'  >AC</button>        
+        <button type='button' id='equals'    >=</button>
+      </fieldset>
+    </form>
+  </div>
+  <script type='text/javascript' src='build/script/calculator.js'></script>
+</body>
+</html>

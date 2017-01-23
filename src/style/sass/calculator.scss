@@ -1,0 +1,284 @@
+@import '../reset.css';
+
+@font-face {
+    font-family: 'MM-LCD-Digits-Prerelease';
+    src: url('../type/MM-LCD-Digits-Prerelease.woff') format('woff'), /* Modern Browsers */
+         url('../type/MM-LCD-Digits-Prerelease.ttf') format('truetype'); /* Safari, Android, iOS */
+    font-style: normal;
+    font-weight: 400;
+    text-rendering: optimizeLegibility;
+}
+
+// Typefaces
+
+$output-face: 'MM-LCD-Digits-Prerelease', Arial, sans-serif;
+$button-face: Arial, sans-serif;
+
+// Sizes
+
+$calculator-w: 34rem;
+$calculator-h: 48rem;
+$calculator-border: 0.1rem;
+
+$display-w: 0.9  * $calculator-w;
+$display-h: 0.16 * $calculator-h;
+$display-m: 0.5  * ($calculator-w - $display-w) - $calculator-border;
+
+$keypad-w: $calculator-w - (2 * $calculator-border);
+$keypad-h: $calculator-h - $display-h - (2 * $display-m) - $calculator-border;
+$keypad-p: $display-m;
+
+$keypad-columns: 4;
+$keypad-rows:    5;
+
+$h-gutter: 0.75 * $keypad-p;
+$v-gutter: 0.75 * $keypad-p;
+
+$button-w: ($keypad-w - (2 * $keypad-p) - ($v-gutter * ($keypad-columns - 1))) / $keypad-columns;
+$button-h: ($keypad-h - (2 * $keypad-p) - ($h-gutter * ($keypad-rows - 1))) / $keypad-rows;
+
+// Button corners
+
+$button-small-radius: 1rem;
+$button-large-radius: 4rem;
+
+// Button thickness
+
+$button-thickness: 0.5rem;
+$button-travel: 0.5 * $button-thickness;
+
+// Calculator corners
+
+$calculator-small-radius: $button-small-radius;
+$calculator-large-radius: $button-large-radius + $keypad-p;
+
+// Colors
+
+$grey-light:  rgba(205, 215, 225, 1);
+$grey-medium: rgba(125, 135, 155, 1);
+$grey-dark:   rgba(45, 55, 65, 1);
+$grey-shadow: rgba(15, 25, 35, 1);
+
+$display-on:  rgba(5, 15, 25, 0.6);
+$display-off: rgba(5, 15, 25, 0);
+
+$button-border: rgba(220, 235, 250, 1);
+$button-shadow: rgba(155, 155, 170, 1);
+
+// Mixins
+
+@mixin grid-position ($row, $col) {
+  top:  $button-h * ($row - 1) + $h-gutter * ($row - 1);
+  left: $button-w * ($col - 1) + $v-gutter * ($col - 1);
+}
+
+@mixin screenreader-only {
+  position: absolute;
+  left: -10000rem;
+}
+
+// Styles
+
+html {
+  box-sizing: border-box;
+  position: relative;
+  width:  100%;
+  height: 100%;
+  font-size: 10px;
+  background-color: $grey-medium;
+  background-image: 
+    repeating-linear-gradient(
+      55deg,
+      rgba(0, 0, 0, 0.25),
+      rgba(0, 0, 0, 0.25) 2px,
+      rgba(0, 0, 0, 0)    4px,
+      rgba(0, 0, 0, 0)    4px
+    ),
+    repeating-linear-gradient(
+      -35deg,
+      rgba(125, 125, 150, 1),
+      rgba(125, 125, 150, 1) 10px,
+      rgba(110, 110, 135, 1) 10px,
+      rgba(110, 110, 135, 1) 20px
+    );
+}
+
+body {
+  height: 100%;
+  background-image: radial-gradient(
+    circle farthest-side,
+    rgba(55, 55, 80, 0),
+    rgba(55, 55, 80, 0)   70%,
+    rgba(55, 55, 80, 0.4) 90%
+  ),
+  radial-gradient(
+    circle farthest-side,
+    rgba(25, 25, 50, 0),
+    rgba(25, 25, 50, 0)   90%,
+    rgba(25, 25, 50, 0.6) 125%
+  );
+}
+
+*, *:before, *:after {
+  box-sizing: inherit; 
+  transition-property: all;
+  transition-duration: 0.1s;
+  transition-timing-function: ease;
+}
+
+#calculator {
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  width:  $calculator-w;
+  height: $calculator-h;
+  margin-left: -0.5 * $calculator-w;
+  margin-top:  -0.5 * $calculator-h;
+  background-color: $grey-light;
+  border: $calculator-border solid rgba(75, 85, 105, 1);
+  border-radius: 
+    $calculator-small-radius 
+    $calculator-small-radius 
+    $calculator-large-radius 
+    $calculator-large-radius;
+  box-shadow: 
+    0 9px 2px -2px $grey-shadow, 
+    0 10px 50px 0 $grey-shadow,
+    0 10px 5px 0 rgba(15, 25, 35, 0.5),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 1);
+}
+
+// Display
+
+#display {
+  width:  $display-w;
+  height: $display-h;
+  margin: $display-m;
+  padding: 0 (0.105 * $display-h) 0 0;
+  text-align: right;
+  font-family: $output-face;
+  font-size: $display-h * 1.05;
+  line-height: $display-h * 0.95;
+  color: $display-on;
+  background-color: $grey-medium;
+  animation: show .25s linear 1;
+}
+
+@keyframes show {
+  0%   { color: $display-off; }
+  100% { color: $display-on;  }
+}
+
+#display.hidden {
+  animation: hide .25s linear 1;  
+}
+
+@keyframes hide {
+  0%   { color: $display-on;  }
+  100% { color: $display-off; }
+}
+
+#display.backlit {
+  background-color: rgba(0, 205, 255, 1);
+  box-shadow: inset 0 0 20px rgba(0, 100, 150, 1);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+// Keypad
+
+#keypad {
+  position: relative;
+  width:  $keypad-w;
+  height: $keypad-h;
+  border-radius: 0 0 $calculator-large-radius $calculator-large-radius;
+  background-image: linear-gradient(
+    to bottom,
+    $grey-medium,
+    $grey-medium 1px,
+    $grey-light  1px,
+    $grey-light  2px,
+    $grey-dark   2px
+  );
+}
+
+// Button groups
+
+#keypad > * {
+  position: absolute;
+  width:    0;
+  height:   0;
+  top:      $keypad-p;
+  left:     $keypad-p;
+}
+
+legend {
+  @include screenreader-only;
+}
+
+// Buttons
+
+button {
+  position: absolute;
+  margin:  0;
+  padding: 0;
+  width:  $button-w;
+  height: $button-h;
+  appearance: none;
+  background-image: linear-gradient(rgba(220, 235, 250, 1), rgba(230, 245, 250, 1));
+  background-color: rgba(230, 245, 250, 1);
+  border: 1px solid $button-border;
+  border-radius: $button-small-radius;
+  box-shadow: 0 $button-thickness 1px -1px $button-shadow, inset 0 0 ($button-h / 2) 0 rgba(200, 215, 220, 1);
+  color: $grey-medium;
+  font: 3rem $button-face;
+}
+
+button:active {
+  transform: translateY($button-travel);
+  background-color: rgba(200, 215, 220, 1);
+  box-shadow: 0 ($button-thickness - $button-travel) 1px -1px rgba(85, 85, 100, 1);
+}
+
+// Button grid
+
+#zero  { @include grid-position(5, 1) }
+#point { @include grid-position(5, 3) }
+#one   { @include grid-position(4, 1) }
+#two   { @include grid-position(4, 2) }
+#three { @include grid-position(4, 3) }
+#four  { @include grid-position(3, 1) }
+#five  { @include grid-position(3, 2) }
+#six   { @include grid-position(3, 3) }
+#seven { @include grid-position(2, 1) }
+#eight { @include grid-position(2, 2) }
+#nine  { @include grid-position(2, 3) }
+
+#plus  { @include grid-position(4, 4) }
+#minus { @include grid-position(3, 4) }
+#times { @include grid-position(2, 4) }
+#div   { @include grid-position(1, 4) }
+
+#allClear   { @include grid-position(1, 1) }
+#clearEntry { @include grid-position(1, 2) }
+#negative   { @include grid-position(1, 3) }
+#equals     { @include grid-position(5, 4) }
+
+// Additional button styles
+
+#zero  { 
+  width: $button-w * 2 + $v-gutter;
+  border-bottom-left-radius: $button-large-radius;
+}
+
+#equals { 
+  color: rgba(255, 255, 255, 1); 
+  background-image: linear-gradient(rgba(200, 40, 0, 1), rgba(220, 60, 0, 1));
+  background-color: rgba(220, 60, 0, 1);
+  border: 1px solid rgba(220, 60, 0, 1);
+  border-bottom-right-radius: $button-large-radius;
+  box-shadow: 0 $button-thickness 1px -1px rgba(150, 30, 10, 1);
+}
+
+#equals:active {
+  box-shadow: 0 ($button-thickness - $button-travel) 1px -1px rgba(100, 20, 0, 1);
+}
