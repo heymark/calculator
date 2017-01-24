@@ -161,6 +161,8 @@ body {
   line-height: $display-h * 0.95;
   color: $display-on;
   background-color: $grey-medium;
+  box-shadow: inset 0 0 20px rgba(75, 75, 100, 1);
+  border: 2px solid rgba(255, 255, 255, 0.5);
   animation: show .25s linear 1;
 }
 
