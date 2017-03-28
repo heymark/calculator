@@ -1,17 +1,17 @@
 'use strict';
 
-import calculator from './calc.js';
+import calculator from './calc';
 
 require('../style/sass/calculator.scss');
 
-const buttons = document.getElementsByTagName('button');
+const keypad = document.getElementById('keypad');
 
-for (const button of buttons) {
-  const buttonValue = button.id;
-  button.addEventListener('click', function (event) {
+keypad.addEventListener('click', function (event) {
+  if (event.target && event.target.nodeName == 'BUTTON') {
+    const buttonValue = event.target.id;
     calculator.input(buttonValue);
-  });
-}
+  }
+});
 
 document.getElementById('display').classList.add('backlit');
 
