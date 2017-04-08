@@ -253,7 +253,7 @@ button {
 button:active {
   transform: translateY($button-travel);
   background-color: rgba(200, 215, 220, 1);
-  box-shadow: 0 ($button-thickness - $button-travel) 1px -1px rgba(85, 85, 100, 1);
+  box-shadow: 0 ($button-thickness - $button-travel) 1px -1px transparentize($button-shadow, 0.25);
 }
 
 // Button grid
